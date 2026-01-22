@@ -130,9 +130,8 @@ public sealed class TwoFactorSsoController : ControllerBase
             var user = await _userManager.AuthenticateUser(
                 request.Username,
                 request.Password,
-                passwordSha1: string.Empty,
-                remoteEndPoint: remoteEndPoint,
-                isUserSession: true).ConfigureAwait(false);
+                remoteEndPoint,
+                true).ConfigureAwait(false);
 
             if (user == null)
             {
