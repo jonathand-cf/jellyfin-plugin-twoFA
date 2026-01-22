@@ -24,7 +24,7 @@ Build and copy the plugin output to your Jellyfin plugins folder, then restart J
 If you want to add this plugin via a repository URL, add the manifest below in Dashboard -> Plugins -> Repositories:
 
 ```url
-https://raw.githubusercontent.com/jonathand-cf/jellyfin-plugin-twoFA/refs/heads/main/manifest.json
+https://raw.githubusercontent.com/jonathand-cf/jellyfin-plugin-twoFA/main/manifest.json
 ```
 
 ### 2) Open the 2FA login page
