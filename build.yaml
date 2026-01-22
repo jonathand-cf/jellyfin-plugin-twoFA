@@ -1,0 +1,16 @@
+---
+name: "2FA"
+guid: "48B36D30-3FC5-4560-9920-98EC434DAB1D"
+version: "1.0.0.0"
+targetAbi: "10.9.0.0"
+framework: "net8.0"
+overview: "Short description about your plugin"
+description: >
+  2FA plugin for Jellyfin, an optinal OTP field per user,
+  supporting TOTP and adding Authentik as a optional extra provider.
+category: "General"
+owner: "jellyfin"
+artifacts:
+- "Jellyfin.Plugin.2FA.dll"
+changelog: >
+  changelog
