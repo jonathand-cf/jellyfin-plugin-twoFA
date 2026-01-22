@@ -28,6 +28,8 @@
   <ItemGroup>
     <None Remove="Configuration\configPage.html" />
     <EmbeddedResource Include="Configuration\configPage.html" />
+    <None Remove="Assets\Login\**\*" />
+    <EmbeddedResource Include="Assets\Login\**\*" />
   </ItemGroup>
 
 </Project>

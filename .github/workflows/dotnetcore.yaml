@@ -1,0 +1,48 @@
+name: Release Jellyfin 2FA Plugin
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. 0.1.0)'
+        required: true
+      prerelease:
+        description: 'Mark as prerelease'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Publish Plugin
+        run: dotnet publish Jellyfin.Plugin.2FA/Jellyfin.Plugin.2FA.csproj -c Release -o ./publish
+
+      - name: Create Release Zip
+        run: |
+          zip -r Jellyfin.Plugin.2FA-${{ inputs.version }}.zip ./publish
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Jellyfin.Plugin.2FA-${{ inputs.version }}
+          path: Jellyfin.Plugin.2FA-${{ inputs.version }}.zip
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.version }}
+          name: Release v${{ inputs.version }}
+          prerelease: ${{ inputs.prerelease }}
+          files: Jellyfin.Plugin.2FA-${{ inputs.version }}.zip

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Jellyfin 2FA Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/sso/2fa/login.css" rel="stylesheet">
+    <style>
+        /*{{CUSTOM_CSS}}*/
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="card">
+            <h1>Jellyfin 2FA</h1>
+            <p class="subtitle">Sign in with your Jellyfin credentials and one-time code.</p>
+            <div id="errorMessage" class="error"></div>
+            <form id="twofaLoginForm">
+                <div class="inputContainer">
+                    <label class="inputLabel" for="txtUsername">Username</label>
+                    <input id="txtUsername" name="username" type="text" autocomplete="username">
+                </div>
+                <div class="inputContainer">
+                    <label class="inputLabel" for="txtPassword">Password</label>
+                    <input id="txtPassword" name="password" type="password" autocomplete="current-password">
+                </div>
+                <div class="inputContainer">
+                    <label class="inputLabel" for="txtOtp">One-time code</label>
+                    <input id="txtOtp" name="otp" type="text" inputmode="numeric" autocomplete="one-time-code">
+                </div>
+                <button class="primaryButton" type="submit">Sign in</button>
+            </form>
+            <div class="footer">
+                <a href="{{SERVER_URL}}/web/index.html#!/login.html">Use standard login</a>
+            </div>
+        </div>
+    </div>
+    <script src="/sso/2fa/login.js"></script>
+</body>
+</html>
