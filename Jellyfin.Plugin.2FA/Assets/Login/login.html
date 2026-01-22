@@ -30,6 +30,26 @@
                 </div>
                 <button class="primaryButton" type="submit">Sign in</button>
             </form>
+            <div class="divider"></div>
+            <h2>Set up 2FA</h2>
+            <p class="subtitle">Use your Jellyfin username and password to generate a secret.</p>
+            <button id="twofaEnrollButton" class="secondaryButton" type="button">Generate secret</button>
+            <div id="enrollSection" class="enrollSection">
+                <div class="inputContainer">
+                    <label class="inputLabel" for="txtSecret">Secret</label>
+                    <input id="txtSecret" type="text" readonly>
+                </div>
+                <div class="inputContainer">
+                    <label class="inputLabel" for="txtOtpUri">OTP URI</label>
+                    <input id="txtOtpUri" type="text" readonly>
+                </div>
+                <div class="inputContainer">
+                    <label class="inputLabel" for="txtConfirmCode">Confirm code</label>
+                    <input id="txtConfirmCode" type="text" inputmode="numeric">
+                </div>
+                <button id="twofaConfirmButton" class="secondaryButton" type="button">Confirm 2FA</button>
+                <div id="confirmMessage" class="message"></div>
+            </div>
             <div class="footer">
                 <a href="{{SERVER_URL}}/web/index.html#!/login.html">Use standard login</a>
             </div>

@@ -2,6 +2,13 @@ const serverUrl = "{{SERVER_URL}}";
 
 const form = document.getElementById("twofaLoginForm");
 const errorMessage = document.getElementById("errorMessage");
+const enrollButton = document.getElementById("twofaEnrollButton");
+const enrollSection = document.getElementById("enrollSection");
+const secretField = document.getElementById("txtSecret");
+const otpUriField = document.getElementById("txtOtpUri");
+const confirmCodeField = document.getElementById("txtConfirmCode");
+const confirmButton = document.getElementById("twofaConfirmButton");
+const confirmMessage = document.getElementById("confirmMessage");
 
 let deviceId;
 let deviceName;
@@ -64,6 +71,72 @@ form.addEventListener("submit", function (event) {
             }
         })
         .catch(() => showError("Network error."));
+});
+
+enrollButton.addEventListener("click", function () {
+    clearError();
+    confirmMessage.textContent = "";
+
+    const username = document.getElementById("txtUsername").value.trim();
+    const password = document.getElementById("txtPassword").value;
+
+    if (!username || !password) {
+        showError("Username and password are required for enrollment.");
+        return;
+    }
+
+    fetch(serverUrl + "/sso/2fa/enroll", {
+        method: "POST",
+        body: JSON.stringify({
+            Username: username,
+            Password: password
+        }),
+        headers: {
+            "Content-Type": "application/json; charset=UTF-8"
+        }
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error("Enroll failed");
+        }
+        return response.json();
+    }).then((data) => {
+        secretField.value = data.Secret || "";
+        otpUriField.value = data.OtpAuthUri || "";
+        enrollSection.style.display = "block";
+    }).catch(() => showError("Unable to generate secret. Check your credentials."));
+});
+
+confirmButton.addEventListener("click", function () {
+    clearError();
+    confirmMessage.textContent = "";
+
+    const username = document.getElementById("txtUsername").value.trim();
+    const password = document.getElementById("txtPassword").value;
+    const code = confirmCodeField.value.trim();
+
+    if (!username || !password || !code) {
+        showError("Username, password, and code are required.");
+        return;
+    }
+
+    fetch(serverUrl + "/sso/2fa/confirm", {
+        method: "POST",
+        body: JSON.stringify({
+            Username: username,
+            Password: password,
+            Code: code
+        }),
+        headers: {
+            "Content-Type": "application/json; charset=UTF-8"
+        }
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error("Confirm failed");
+        }
+        return response.json();
+    }).then(() => {
+        confirmMessage.textContent = "2FA enabled. You can now sign in.";
+    }).catch(() => showError("Unable to confirm code."));
 });
 
 function showError(message) {

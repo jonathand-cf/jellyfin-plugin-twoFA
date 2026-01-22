@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using Jellyfin.Database.Implementations.Entities;
 using Jellyfin.Plugin.TwoFA.Classes;
 using Jellyfin.Plugin.TwoFA.Configuration;
 using Jellyfin.Plugin.TwoFA.Models;
@@ -127,11 +128,7 @@ public sealed class TwoFactorSsoController : ControllerBase
 
         try
         {
-            var user = await _userManager.AuthenticateUser(
-                request.Username,
-                request.Password,
-                remoteEndPoint,
-                true).ConfigureAwait(false);
+            var user = await AuthenticateUserAsync(request.Username, request.Password, remoteEndPoint).ConfigureAwait(false);
 
             if (user == null)
             {
@@ -212,6 +209,90 @@ public sealed class TwoFactorSsoController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Enrolls the current user for TOTP by returning a secret and otpauth URI.
+    /// </summary>
+    /// <param name="request">Enrollment request.</param>
+    /// <returns>Enrollment response payload.</returns>
+    [AllowAnonymous]
+    [HttpPost("enroll")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult<EnrollResponse>> Enroll([FromBody] TwoFactorEnrollRequest request)
+    {
+        if (!_config.AllowUserEnrollment || !_config.EnableTotp)
+        {
+            return Forbid();
+        }
+
+        if (request == null)
+        {
+            return BadRequest("Missing request body.");
+        }
+
+        string remoteEndPoint = Request.HttpContext.GetNormalizedRemoteIP()?.ToString() ?? string.Empty;
+        var user = await AuthenticateUserAsync(request.Username, request.Password, remoteEndPoint).ConfigureAwait(false);
+        if (user == null)
+        {
+            return Unauthorized("Invalid username or password.");
+        }
+
+        var settings = await _userStore.GetAsync(user.Id, HttpContext.RequestAborted).ConfigureAwait(false);
+        string secret = _totpService.GenerateSecret();
+        settings.TotpSecret = secret;
+        settings.IsTotpConfirmed = false;
+        settings.IsEnabled = false;
+        await _userStore.SetAsync(user.Id, settings, HttpContext.RequestAborted).ConfigureAwait(false);
+
+        string uri = _totpService.BuildOtpAuthUri(_config.TotpIssuer, user.Username, secret);
+        return new EnrollResponse
+        {
+            Secret = secret,
+            OtpAuthUri = uri
+        };
+    }
+
+    /// <summary>
+    /// Confirms the TOTP code to enable 2FA for the user.
+    /// </summary>
+    /// <param name="request">Confirmation request.</param>
+    /// <returns>A confirmation response.</returns>
+    [AllowAnonymous]
+    [HttpPost("confirm")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<VerifyResponse>> Confirm([FromBody] TwoFactorConfirmRequest request)
+    {
+        if (request == null)
+        {
+            return BadRequest("Missing request body.");
+        }
+
+        string remoteEndPoint = Request.HttpContext.GetNormalizedRemoteIP()?.ToString() ?? string.Empty;
+        var user = await AuthenticateUserAsync(request.Username, request.Password, remoteEndPoint).ConfigureAwait(false);
+        if (user == null)
+        {
+            return Unauthorized("Invalid username or password.");
+        }
+
+        var settings = await _userStore.GetAsync(user.Id, HttpContext.RequestAborted).ConfigureAwait(false);
+        if (settings.TotpSecret is null || !_totpService.ValidateCode(settings.TotpSecret, request.Code))
+        {
+            return BadRequest("Invalid code.");
+        }
+
+        settings.IsEnabled = true;
+        settings.IsTotpConfirmed = true;
+        settings.LastVerifiedUtc = DateTimeOffset.UtcNow;
+        await _userStore.SetAsync(user.Id, settings, HttpContext.RequestAborted).ConfigureAwait(false);
+
+        return new VerifyResponse { Success = true };
+    }
+
     private static string GetDeviceName(HttpRequest request)
     {
         if (request.Headers.TryGetValue("X-DeviceName", out var header) && !string.IsNullOrWhiteSpace(header))
@@ -242,5 +323,10 @@ public sealed class TwoFactorSsoController : ControllerBase
         string pathBase = Request.PathBase.HasValue ? Request.PathBase.Value : string.Empty;
 
         return $"{scheme}://{host}{pathBase}";
+    }
+
+    private async Task<User?> AuthenticateUserAsync(string username, string password, string remoteEndPoint)
+    {
+        return await _userManager.AuthenticateUser(username, password, remoteEndPoint, true).ConfigureAwait(false);
     }
 }
