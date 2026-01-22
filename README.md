@@ -56,7 +56,25 @@ On the `/sso/2fa` page:
 
 Use the same `/sso/2fa` page and enter username, password, and OTP code.
 
-## Reverse proxy redirect (optional)
+## How do i use it?
+
+I made this for myself, so i can share my public jellyfin url and have 2FA
+
+I currently have set `http_status:403`
+
+```url
+/Users/authenticatebyname
+/Users/AuthenticateByName
+/Users/AuthenticateWith
+```
+
+above the `*` catch-all in `cloudflare -> zero trust -> connectors (edit tunnel) -> published application routes`
+
+but i can still use Quick Connect on phones and tv's, so i only need to be logged into a PC or in a browser via `/sso/2fa`.
+
+Feel free to ask me for my set-up, i am not that good at this anyways.
+
+### Reverse proxy redirect (optional)
 
 If you want to force browser logins through the 2FA page, add a redirect in your reverse proxy so `/web/#!/login.html` goes to `/sso/2fa`.
 
@@ -78,7 +96,15 @@ Caddy example:
 redir @login /sso/2fa 302
 ```
 
-This only affects the web UI, not other Jellyfin clients.
+Note: the `#/login` fragment is client-side, so only the `/web/index.html` + query redirect is possible. This only affects the web UI, not other Jellyfin clients.
+
+If you block Jellyfin login endpoints at the tunnel or proxy instead, put the path rules above the `*` catch-all and return `http_status:403` for:
+
+```text
+/Users/authenticatebyname
+/Users/AuthenticateByName
+/Users/AuthenticateWith
+```
 
 ## Plugin configuration
 
