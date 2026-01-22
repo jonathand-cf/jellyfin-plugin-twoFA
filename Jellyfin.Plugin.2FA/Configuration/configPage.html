@@ -1,87 +1,86 @@
-<!DOCTYPE html>
-<script src="query.js"></script>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>2FA</title>
-</head>
-<body>
-    <div id="TwoFAConfigPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-input,emby-button,emby-select,emby-checkbox">
-        <div data-role="content">
-            <div class="content-primary">
-                <form id="TwoFAConfigForm">
-                    <div class="checkboxContainer checkboxContainer-withDescription">
-                        <label class="emby-checkbox-label">
-                            <input id="EnableTotp" name="EnableTotp" type="checkbox" is="emby-checkbox" />
-                            <span>Enable TOTP (QR)</span>
-                        </label>
-                        <div class="fieldDescription">Allow authenticator apps for 2FA.</div>
-                        <button id="TwoFAEnrollButton" is="emby-button" type="button" class="raised">
-                          <span>Generate QR</span>
-                        </button>
-                    </div>
-                    <div class="inputContainer">
-                        <label class="inputLabel inputLabelUnfocused" for="TotpIssuer">Issuer</label>
-                        <input id="TotpIssuer" name="TotpIssuer" type="text" is="emby-input" />
-                        <div class="fieldDescription">Shown inside the QR code and authenticator app.</div>
-                    </div>
-                    <div class="checkboxContainer checkboxContainer-withDescription">
-                        <label class="emby-checkbox-label">
-                            <input id="AllowUserEnrollment" name="AllowUserEnrollment" type="checkbox" is="emby-checkbox" />
-                            <span>Allow users to opt in</span>
-                        </label>
-                        <div class="fieldDescription">Users can enable 2FA in their profile once UI wiring exists.</div>
-                    </div>
-                    <h2>Authentik</h2>
-                    <div class="checkboxContainer checkboxContainer-withDescription">
-                        <label class="emby-checkbox-label">
-                            <input id="EnableAuthentik" name="EnableAuthentik" type="checkbox" is="emby-checkbox" />
-                            <span>Enable Authentik provider</span>
-                        </label>
-                        <div class="fieldDescription">Allows external login providers via Authentik.</div>
-                    </div>
-                    <div class="inputContainer">
-                        <label class="inputLabel inputLabelUnfocused" for="AuthentikBaseUrl">Authentik base URL</label>
-                        <input id="AuthentikBaseUrl" name="AuthentikBaseUrl" type="text" is="emby-input" />
-                    </div>
-                    <div class="inputContainer">
-                        <label class="inputLabel inputLabelUnfocused" for="AuthentikClientId">Authentik client id</label>
-                        <input id="AuthentikClientId" name="AuthentikClientId" type="text" is="emby-input" />
-                    </div>
-                    <div class="inputContainer">
-                        <label class="inputLabel inputLabelUnfocused" for="AuthentikClientSecret">Authentik client secret</label>
-                        <input id="AuthentikClientSecret" name="AuthentikClientSecret" type="password" is="emby-input" />
-                    </div>
-                    <div>
-                        <button is="emby-button" type="submit" class="raised button-submit block emby-button">
-                            <span>Save</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
+<div id="TwoFAConfigPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-input,emby-button,emby-select,emby-checkbox">
+    <div data-role="content">
+        <div class="content-primary">
+            <form id="TwoFAConfigForm">
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label class="emby-checkbox-label">
+                        <input id="EnableTotp" name="EnableTotp" type="checkbox" is="emby-checkbox" />
+                        <span>Enable TOTP (QR)</span>
+                    </label>
+                    <div class="fieldDescription">Allow authenticator apps for 2FA.</div>
+                    <button id="TwoFAEnrollButton" is="emby-button" type="button" class="raised">
+                      <span>Generate QR</span>
+                    </button>
+                </div>
+                <div class="inputContainer">
+                    <label class="inputLabel inputLabelUnfocused" for="TotpIssuer">Issuer</label>
+                    <input id="TotpIssuer" name="TotpIssuer" type="text" is="emby-input" />
+                    <div class="fieldDescription">Shown inside the QR code and authenticator app.</div>
+                </div>
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label class="emby-checkbox-label">
+                        <input id="AllowUserEnrollment" name="AllowUserEnrollment" type="checkbox" is="emby-checkbox" />
+                        <span>Allow users to opt in</span>
+                    </label>
+                    <div class="fieldDescription">Users can enable 2FA in their profile once UI wiring exists.</div>
+                </div>
+                <h2>Authentik</h2>
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label class="emby-checkbox-label">
+                        <input id="EnableAuthentik" name="EnableAuthentik" type="checkbox" is="emby-checkbox" />
+                        <span>Enable Authentik provider</span>
+                    </label>
+                    <div class="fieldDescription">Allows external login providers via Authentik.</div>
+                </div>
+                <div class="inputContainer">
+                    <label class="inputLabel inputLabelUnfocused" for="AuthentikBaseUrl">Authentik base URL</label>
+                    <input id="AuthentikBaseUrl" name="AuthentikBaseUrl" type="text" is="emby-input" />
+                </div>
+                <div class="inputContainer">
+                    <label class="inputLabel inputLabelUnfocused" for="AuthentikClientId">Authentik client id</label>
+                    <input id="AuthentikClientId" name="AuthentikClientId" type="text" is="emby-input" />
+                </div>
+                <div class="inputContainer">
+                    <label class="inputLabel inputLabelUnfocused" for="AuthentikClientSecret">Authentik client secret</label>
+                    <input id="AuthentikClientSecret" name="AuthentikClientSecret" type="password" is="emby-input" />
+                </div>
+                <div>
+                    <button is="emby-button" type="submit" class="raised button-submit block emby-button">
+                        <span>Save</span>
+                    </button>
+                </div>
+            </form>
         </div>
-        <script type="text/javascript">
-            var TwoFAConfig = {
-                pluginUniqueId: '48B36D30-3FC5-4560-9920-98EC434DAB1D'
-            };
+    </div>
+    <script type="text/javascript">
+        var TwoFAConfig = {
+            pluginUniqueId: '48B36D30-3FC5-4560-9920-98EC434DAB1D'
+        };
 
-            document.querySelector('#TwoFAConfigPage')
-                .addEventListener('pageshow', function() {
-                    Dashboard.showLoadingMsg();
-                    ApiClient.getPluginConfiguration(TwoFAConfig.pluginUniqueId).then(function (config) {
-                        document.querySelector('#EnableTotp').checked = config.EnableTotp;
-                        document.querySelector('#TotpIssuer').value = config.TotpIssuer || '';
-                        document.querySelector('#AllowUserEnrollment').checked = config.AllowUserEnrollment;
-                        document.querySelector('#EnableAuthentik').checked = config.EnableAuthentik;
-                        document.querySelector('#AuthentikBaseUrl').value = config.AuthentikBaseUrl || '';
-                        document.querySelector('#AuthentikClientId').value = config.AuthentikClientId || '';
-                        document.querySelector('#AuthentikClientSecret').value = config.AuthentikClientSecret || '';
-                        Dashboard.hideLoadingMsg();
-                    });
+        var configPage = document.querySelector('#TwoFAConfigPage');
+        var configForm = document.querySelector('#TwoFAConfigForm');
+
+        if (configPage) {
+            configPage.addEventListener('pageshow', function() {
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(TwoFAConfig.pluginUniqueId).then(function (config) {
+                    document.querySelector('#EnableTotp').checked = config.EnableTotp;
+                    document.querySelector('#TotpIssuer').value = config.TotpIssuer || '';
+                    document.querySelector('#AllowUserEnrollment').checked = config.AllowUserEnrollment;
+                    document.querySelector('#EnableAuthentik').checked = config.EnableAuthentik;
+                    document.querySelector('#AuthentikBaseUrl').value = config.AuthentikBaseUrl || '';
+                    document.querySelector('#AuthentikClientId').value = config.AuthentikClientId || '';
+                    document.querySelector('#AuthentikClientSecret').value = config.AuthentikClientSecret || '';
+                }).catch(function (err) {
+                    console.error('Failed to load 2FA configuration', err);
+                }).finally(function () {
+                    Dashboard.hideLoadingMsg();
                 });
+            });
+        }
 
-            document.querySelector('#TwoFAConfigForm')
-                .addEventListener('submit', function(e) {
+        if (configForm) {
+            configForm.addEventListener('submit', function(e) {
                 Dashboard.showLoadingMsg();
                 ApiClient.getPluginConfiguration(TwoFAConfig.pluginUniqueId).then(function (config) {
                     config.EnableTotp = document.querySelector('#EnableTotp').checked;
@@ -91,14 +90,17 @@
                     config.AuthentikBaseUrl = document.querySelector('#AuthentikBaseUrl').value;
                     config.AuthentikClientId = document.querySelector('#AuthentikClientId').value;
                     config.AuthentikClientSecret = document.querySelector('#AuthentikClientSecret').value;
-                    ApiClient.updatePluginConfiguration(TwoFAConfig.pluginUniqueId, config).then(function (result) {
-                        Dashboard.processPluginConfigurationUpdateResult(result);
-                    });
+                    return ApiClient.updatePluginConfiguration(TwoFAConfig.pluginUniqueId, config);
+                }).then(function (result) {
+                    Dashboard.processPluginConfigurationUpdateResult(result);
+                }).catch(function (err) {
+                    console.error('Failed to save 2FA configuration', err);
+                }).finally(function () {
+                    Dashboard.hideLoadingMsg();
                 });
                 e.preventDefault();
                 return false;
             });
-        </script>
-    </div>
-</body>
-</html>
+        }
+    </script>
+</div>
