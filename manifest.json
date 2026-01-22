@@ -9,11 +9,11 @@
       "category": "Authentication",
       "versions": [
         {
-          "version": "1.0.0.0",
+          "version": "1.0.2.0",
           "changelog": "Initial release.",
           "targetAbi": "10.11.0.0",
-          "sourceUrl": "https://github.com/jonathand-cf/jellyfin-plugin-twoFA/releases/download/1.0.0.0/Jellyfin.Plugin.2FA-1.0.0.0.zip",
-          "checksum": "REPLACE_WITH_SHA256",
+          "sourceUrl": "https://github.com/jonathand-cf/jellyfin-plugin-twoFA/releases/tag/1.0.2#:~:text=Jellyfin.Plugin.2FA%2D1.0.2.zip",
+          "checksum": "sha256:6f979c84a1e1aa7fea5006b01d1360c3c8e17031b0787f1efed13038a9ad40c6",
           "timestamp": "2025-01-22T00:00:00Z"
         }
       ]
