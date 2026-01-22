@@ -6,3 +6,4 @@ artifacts
 .vscode/
 .editorconfig
 /publish
+makefile

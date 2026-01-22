@@ -4,6 +4,8 @@ This plugin adds a standalone 2FA login flow for Jellyfin and backend endpoints 
 
 Important: this does not change the default Jellyfin login page. Users can still log in via `/web`. The 2FA flow lives at `/sso/2fa`.
 
+![2fa](images/jlfin2fa.png)
+
 ## Features
 
 - Standalone login page at `/sso/2fa`
@@ -24,7 +26,7 @@ Build and copy the plugin output to your Jellyfin plugins folder, then restart J
 If you want to add this plugin via a repository URL, add the manifest below in Dashboard -> Plugins -> Repositories:
 
 ```url
-https://raw.githubusercontent.com/jonathand-cf/jellyfin-plugin-twoFA/main/manifest.json
+https://raw.githubusercontent.com/jonathand-cf/jellyfin-plugin-twoFA/dist/manifest.json
 ```
 
 ### 2) Open the 2FA login page
@@ -105,3 +107,13 @@ Publish:
 ```bash
 dotnet publish Jellyfin.Plugin.2FA/Jellyfin.Plugin.2FA.csproj -c Release -o ./publish
 ```
+
+## Release Process
+
+This project uses a GitHub Actions workflow for automated releases (`.github/workflows/dotnetcore.yml`).
+
+- Trigger: the workflow is run manually from the Actions tab on GitHub.
+- Versioning: MinVer calculates the version from the latest Git tag.
+- Build: the plugin is compiled with the .NET 9 SDK (required for Jellyfin 10.11.x).
+- Repository update: the workflow updates `manifest.json` in an orphaned `dist` branch for the repository URL.
+- GitHub Release: the workflow creates a release, drafts the changelog, and attaches the compiled `.zip`.
