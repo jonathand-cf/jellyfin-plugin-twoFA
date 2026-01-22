@@ -1,10 +1,36 @@
 # Jellyfin 2FA Plugin
 
+> Pre alpha beta
+
+![2fa](images/jlfin2fa.png)
+
 This plugin adds a standalone 2FA login flow for Jellyfin and backend endpoints for enrolling users in TOTP.
 
 Important: this does not change the default Jellyfin login page. Users can still log in via `/web`. The 2FA flow lives at `/sso/2fa`.
 
-![2fa](images/jlfin2fa.png)
+## Preview
+
+<div align="center">
+    <table>
+        <tr>
+            <td align="center">
+                <sub>When vistiting `/sso/2fa`</sub>
+                <img src="assets/2fa.png" width="600" alt="Centered Positioning preview"/>
+            </td>
+            <td align="center">
+                <sub>When adding 2fa for the first time</sub>
+                <img src="assets/2fapass.png" width="600" alt="Custom Positioning preview"/>
+            </td>
+        </tr>
+    </table>
+    <details>
+        <summary><b>Show Preview Videos</b></summary>
+        <b>Creating the 2FA:</b>
+        <img src="assets/2fa.gif" width="700" alt="Centered Positioning animation"/>
+        <b>Logging in:</b>
+        <img src="assets/login2fa.gif" width="700" alt="Custom Positioning animation"/>
+    </details>
+</div>
 
 ## Features
 
